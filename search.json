@@ -2,7 +2,7 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Outfield Catch Probability Analysis",
+    "title": "2024 Catch Probability Data",
     "section": "",
     "text": "This graphic shows catch probabilities from real fly balls at every MLB ballpark, with accurate stadium measurements using a 5-point fence drawing system. It also includes the batter/fielder who hit/caught the specific fly ball, exit velocity, launch angle, and distance traveled:\n\n\n\n\n\n\n(For clarity, this model represents 50% of all fly balls hit during the 2024 MLB season. Data is gathered from Statcast and Baseball Savant. Also, fly balls with a 90-100% chance of being caught are excluded for the purpose of clearing up space)\nHere is a graphic that allows you to take any one of MLB’s top 50 rostered outfielders in 2024 and simulate a fly ball, calculating their catch probability using the same method as MLB’s Statcast:\n\n\n\n\nSelect Outfielder:\n\nAaron Judge (NYY)\nAdolis García (TEX)\nAlex Verdugo (NYY)\nAndrew Benintendi (CWS)\nBobby Witt Jr. (KC)\nBrandon Nimmo (NYM)\nBrenton Doyle (COL)\nBryan Reynolds (PIT)\nByron Buxton (MIN)\nCeddanne Rafaela (BOS)\nCody Bellinger (CHC)\nCorbin Carroll (ARI)\nElly De La Cruz (CIN)\nEloy Jiménez (CWS)\nEvan Carter (TEX)\nFernando Tatis Jr. (SD)\nGeorge Springer (TOR)\nGiancarlo Stanton (NYY)\nJackson Chourio (MIL)\nJarren Duran (BOS)\nJazz Chisholm Jr. (MIA)\nJesse Winker (WSH)\nJoc Pederson (AZ)\nJohan Rojas (PHI)\nJuan Soto (NYY)\nJulio Rodríguez (SEA)\nKyle Schwarber (PHI)\nKyle Tucker (HOU)\nLars Nootbaar (STL)\nLuis Robert Jr. (CWS)\nMichael Harris II (ATL)\nMike Trout (LAA)\nMookie Betts (LAD)\nNick Castellanos (PHI)\nPete Crow-Armstrong (CHC)\nRandy Arozarena (TB)\nRonald Acuña Jr. (ATL)\nSeiya Suzuki (CHC)\nSteven Kwan (CLE)\nTeoscar Hernández (LAD)\nTrea Turner (PHI)\nTyler O'Neill (BOS)\nVictor Scott II (STL)\nWyatt Langford (TEX)\nYordan Alvarez (HOU)\n\n\n\n\nSprint Speed\n27.3 ft/s\n\n\nCatch Probability\n--%\n\n\nDistance to Ball\n--\n\n\nClick any dot on the field to simulate a fly ball.\n\n\n\n\n\n\nThis model represents one of MLB’s statcast methods of using sprint speed to determine the chances of a fly ball being caught depending on who is playing the outfield, before the ball is even hit."
   },
@@ -11,7 +11,7 @@
     "href": "about.html",
     "title": "About Me",
     "section": "",
-    "text": "My name is Collin Gates, and I am a 2nd year student at New College of Florida. This website is my final project for the “Techne” ISP with Preceptor David Kane.\nThis project is an analysis of catch probabilities during the 2024 MLB season, which includes 50% of all fly balls hit throughout the year. This includes around 40,000 points of data, which all include catch probability, exit velocity, launch angle, distance traveled, batter, and the player who caught the fly ball (if caught)."
+    "text": "My name is Collin Gates, and I am a 2nd year student at New College of Florida. This website is my final project for the “Techne” ISP with Preceptor David Kane.\nThis project is an analysis of catch probabilities during the 2024 MLB season, which includes 50% of all fly balls hit throughout the year. This includes around 40,000 points of data, which all include catch probability, exit velocity, launch angle, distance traveled, batter, and the player who caught the fly ball (if caught).\nTools used: Google Gemini, Baseball Savant, MLB Network, Statcast\nView the Project on GitHub"
   },
   {
     "objectID": "final.analysis.html",
