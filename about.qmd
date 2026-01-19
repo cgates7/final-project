@@ -1,0 +1,7 @@
+---
+title: "About Me"
+---
+
+My name is Collin Gates, and I am a 2nd year student at New College of Florida. This website is my final project for the "Techne" ISP with Preceptor David Kane. 
+
+This project is an analysis of catch probabilities during the 2024 MLB season, which includes 50% of all fly balls hit throughout the year. This includes around 40,000 points of data, which all include catch probability, exit velocity, launch angle, distance traveled, batter, and the player who caught the fly ball (if caught).
