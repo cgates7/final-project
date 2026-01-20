@@ -32,7 +32,7 @@
     "href": "index.html",
     "title": "2024 Catch Probability Data",
     "section": "",
-    "text": "This graphic shows catch probabilities from real fly balls at every MLB ballpark, with accurate stadium measurements using a 5-point fence drawing system. It also includes the batter/fielder who hit/caught the specific fly ball, exit velocity, launch angle, and distance traveled:\n(For clarity, this model represents 50% of all fly balls hit during the 2024 MLB season. Data is gathered from Statcast and Baseball Savant. Also, fly balls with a 90-100% chance of being caught are excluded for the purpose of clearing up space)"
+    "text": "(White X’s represent base hits, colored dots represent caught fly balls)\nFor clarity, this model represents 50% of all fly balls hit during the 2024 MLB season. Also, fly balls with a 90-100% chance of being caught are excluded for the purpose of clearing up space.\nMLB’s Statcast measured over 40,000 fly balls during the 2024 season, and had a catch probability calculated for every single one of them. Represented above is the amount of data that Statcast is capable of measuring, along with real fly balls with calculated catch probabilities for each one. Each stadium plot is built with a 5-point drawing system to show the real outfield wall distance."
   },
   {
     "objectID": "index.html#purpose-of-this-model",
