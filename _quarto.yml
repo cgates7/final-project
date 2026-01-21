@@ -7,8 +7,10 @@ website:
   navbar:
     left:
       - href: index.qmd
-        text: Home
-      - about.qmd
+        text: Catch Probability Data Model
+      - playermodel.qmd
+      - details.qmd
+      - about.qmd 
 
 format:
   html:

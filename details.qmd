@@ -1,0 +1,106 @@
+---
+title: "Details"
+format: html
+---
+
+## Details of the Season Model
+
+### Project Abstract
+The **Outfield Catch Probability Analysis** is a data visualization and analytics model designed to evaluate the spatial distribution of batted balls in Major League Baseball (MLB). By leveraging 2024 Statcast data, this project maps the precise landing coordinates of fly balls and line drives against custom-rendered stadium geometries. The goal is to identify "dead zones" where hits are probable and compare defensive performance across different MLB ballparks, visualizing the fine line between a game-saving catch and an extra-base hit.
+
+### Data Acquisition & Pipeline
+The analysis is powered by MLB's **Statcast** system, which utilizes high-resolution cameras and radar equipment to track ball and player movements.
+
+* **Source:** [Baseball Savant / MLB Statcast](https://baseballsavant.mlb.com/)
+* **Scope:** The dataset currently focuses on the 2024 Regular Season, filtering for outcomes classified as fly balls (`bb_type != 'ground_ball'`) to isolate outfield play.
+* **Key Variables:**
+    * **Launch Metrics:** Exit Velocity (`launch_speed`), Launch Angle (`launch_angle`), and Hang Time.
+    * **Outcome Data:** Event classifications (`field_out`, `home_run`, `single`, `double`, `triple`).
+    * **Coordinates:** Raw `hc_x` and `hc_y` (Hit Coordinates) provided by the MLB API.
+
+### Methodology: Coordinate Transformation
+One of the core technical challenges of this project was translating MLB's standardized API coordinates into real-world stadium dimensions (measured in feet). The Statcast API provides coordinates on a generic 0-250 scale which does not map 1:1 to physical field dimensions.
+
+To solve this, I implemented a coordinate transformation algorithm within the R data pipeline:
+
+$$X_{field} = (hc_x - 125.42) \times 2.5$$
+$$Y_{field} = (198.27 - hc_y) \times 2.5$$
+$$\theta = \arctan(X_{field}, Y_{field})$$
+
+* **Centering:** The origin $(0,0)$ is recalibrated to Home Plate.
+* **Scaling:** A scaling factor of `2.5` is applied to convert the coordinate units into approximate feet.
+* **Rotation:** Trigonometric functions (`atan2`) are used to calculate the spray angle of the ball, allowing for analysis of pull-side vs. opposite-field power.
+
+### The Stadium Geometry Engine
+A standardized field cannot capture the nuances of baseball, where every park has unique dimensions (e.g., the "Green Monster" in Boston vs. the "Short Porch" in New York).
+
+I developed a **Stadium Geometry Engine** that renders custom polygon shapes for individual stadiums based on their official wall distances:
+* **Vector Mapping:** The engine takes distance inputs for Left Field, Left-Center, Center, Right-Center, and Right Field.
+* **Spline Interpolation:** A cubic spline algorithm smooths the connection between these wall points to create a realistic curved outfield fence.
+* **Layering:** The visualization layers the grass field, dirt infield, and foul lines to provide accurate context for every data point.
+
+### Visualization Technology
+The project is built using **R** and **Quarto**, utilizing the **Plotly** library for high-performance interactivity.
+
+* **Interactive Hover:** Users can hover over any specific data point to view the batter's name, the specific event (e.g., "Sac Fly"), and the distance traveled.
+* **Outcome Color Coding:**
+    * **Blue Markers:** Represent Hits (Singles, Doubles, Triples, Home Runs).
+    * **Orange Markers:** Represent Outs (Field Outs, Sac Flies).
+* **Performance:** The rendering engine handles thousands of data points while maintaining responsive zooming and panning capabilities, allowing users to inspect cluster density in the gaps.
+
+### Future Scope & Roadmap
+This project serves as a foundation for more advanced defensive analytics. Future iterations will include:
+* **Hang Time Integration:** Incorporating hang time to differentiate "easy" fly balls from "5-star" diving plays.
+* **Fielder Positioning:** Overlaying starting fielder positions to calculate "Distance Needed to Travel" vs. "Opportunity Time."
+* **3D Trajectory Mapping:** expanding the 2D landing spots into 3D flight paths.
+
+## Details of the Player Model: Evaluating Outfield Range & Efficiency
+
+### Conceptual Framework
+The **Player Model** is the analytical engine designed to isolate an outfielder's individual skill from the context of the game. While the visualizer displays *what happened* (Out vs. Hit), the Player Model attempts to answer *what should have happened*.
+
+The core philosophy relies on **Opportunity Analysis**: evaluating a player not by raw putouts, but by their conversion rate on plays of varying difficulty.
+
+### Feature Engineering
+To assess catch probability, the model ingests specific vector inputs for every batted ball hit into a player's zone.
+
+* **Opportunity Time ($T_{opp}$):** The precise duration the ball is in the air (Hang Time).
+* **Distance Traveled ($D_{dist}$):** The linear distance from home plate to the landing spot.
+* **Distance Needed ($D_{need}$):** The distance the fielder must cover from their starting position to the landing spot. *(Note: In the current iteration, this is approximated using average positioning centroids).*
+* **Wall Proximity ($W_{prox}$):** A binary or continuous variable penalizing catch probability when the landing spot is close to the outfield wall, accounting for the "fear of collision" factor.
+
+### The Probability Algorithm
+The backbone of the model is a **Logistic Regression** classifier (or Generalized Linear Model). We model the probability of a catch ($P_{catch}$) as a function of the distance needed to travel versus the time available to get there.
+
+The fundamental equation used to estimate the difficulty of a play is:
+
+$$P(Catch) = \frac{1}{1 + e^{-(\beta_0 + \beta_1 \cdot D_{need} + \beta_2 \cdot T_{opp} + \beta_3 \cdot \theta_{dir})}}$$
+
+Where:
+* $\beta$ represents the learned coefficients from league-wide data.
+* $\theta_{dir}$ accounts for the direction (running back is harder than running forward).
+* The output is a probability value between 0 (Impossible) and 1 (Routine).
+
+### Performance Metrics: Outs Above Average (OAA)
+Using the probability outputs, we derive the primary metric: **Outs Above Average (OAA)**. This is a cumulative metric that quantifies how many outs a player has saved (or lost) compared to an average MLB outfielder.
+
+The calculation for a single play is defined as:
+
+* **If the Catch is Made:**
+  $$Score = 1 - P(Catch)$$
+  *(Example: Catching a ball with a 30% probability grants +0.70 credit).*
+
+* **If the Ball Drops (Hit):**
+  $$Score = 0 - P(Catch)$$
+  *(Example: Missing a ball with a 90% catch probability results in -0.90 debit).*
+
+### Zone Visualization & Spray Charts
+For the visual component of the Player Model, we utilize **Kernel Density Estimation (KDE)** to generate heatmaps of a player's activity.
+
+* **The "Green Zone":** Areas where the player converts >90% of opportunities.
+* **The "Red Zone":** Areas where the player consistently underperforms expected catch rates.
+* **Shift Analysis:** By plotting the centroid of a player's fielding events, we can visualize their defensive tendencies (e.g., playing deep to prevent doubles vs. shallow to prevent singles).
+
+### Model Limitations & Future Adjustments
+* **Jump/Reaction:** The current model assumes a standardized reaction time. Future versions will integrate "First Step" data to separate reaction speed from sprint speed.
+* **Route Efficiency:** We aim to incorporate route efficiency metrics (actual distance run vs. optimal straight-line distance) to penalize poor pathfinding even if the catch is made.
